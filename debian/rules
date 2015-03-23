@@ -19,6 +19,7 @@ override_dh_install:
 			--root $(CURDIR)/debian/python3-xstatic-angular-lrdragndrop; \
 	done
 	rm -rf $(CURDIR)/debian/python*-xstatic-angular-lrdragndrop/usr/lib/python*/dist-packages/*.pth
+	rm -rf $(CURDIR)/debian/python*-xstatic-angular-lrdragndrop/usr/lib/python*/dist-packages/xstatic/pkg/angular_lrdragndrop/data
 
 override_dh_auto_test:
 ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
