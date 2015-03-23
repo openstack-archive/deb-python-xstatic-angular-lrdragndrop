@@ -305,3 +305,251 @@ Last-Update: 2015-03-23
 +    }]);
 +})(angular);
 \ No newline at end of file
+--- python-xstatic-angular-lrdragndrop-1.0.2.1.orig/xstatic/pkg/angular_irdragndrop/__init__.py	2015-03-23 15:53:16.211692149 +0100
++++ /dev/null	2015-03-23 13:39:05.341324299 +0100
+@@ -1,57 +0,0 @@
+-
+-"""
+-XStatic resource package
+-
+-See package 'XStatic' for documentation and basic tools.
+-"""
+-
+-# official name, upper/lowercase allowed, no spaces
+-DISPLAY_NAME = 'IrDragNDrop'
+-
+-# name used for PyPi
+-PACKAGE_NAME = 'XStatic-%s' % DISPLAY_NAME
+-
+-NAME = __name__.split('.')[-1] # package name (e.g. 'foo' or 'foo_bar')
+-                               # please use a all-lowercase valid python
+-                               # package name
+-
+-VERSION = '1.0.2' # version of the packaged files, please use the upstream
+-                  # version number
+-BUILD = '0' # our package build number, so we can release new builds
+-             # with fixes for xstatic stuff.
+-PACKAGE_VERSION = VERSION + '.' + BUILD # version used for PyPi
+-
+-DESCRIPTION = "%s %s (XStatic packaging standard)" % (DISPLAY_NAME, VERSION)
+-
+-PLATFORMS = 'any'
+-CLASSIFIERS = []
+-KEYWORDS = 'drag-n-drop angular table irdragndrop xstatic'
+-
+-# XStatic-* package maintainer:
+-MAINTAINER = 'Thai Tran'
+-MAINTAINER_EMAIL = 'tqtran@us.ibm.com'
+-
+-# this refers to the project homepage of the stuff we packaged:
+-HOMEPAGE = 'https://github.com/lorenzofox3/lrDragNDrop'
+-
+-# this refers to all files:
+-LICENSE = '(same as %s)' % DISPLAY_NAME
+-
+-from os.path import join, dirname
+-BASE_DIR = join(dirname(__file__), 'data')
+-# linux package maintainers just can point to their file locations like this:
+-#BASE_DIR = '/usr/share/javascript/' + NAME
+-
+-# location of the Javascript file that's the entry point for this package, if
+-# one exists, relative to BASE_DIR
+-MAIN='irdragndrop.js'
+-
+-LOCATIONS = {
+-    # CDN locations (if no public CDN exists, use an empty dict)
+-    # if value is a string, it is a base location, just append relative
+-    # path/filename. if value is a dict, do another lookup using the
+-    # relative path/filename you want.
+-    # your relative path/filenames should usually be without version
+-    # information, because either the base dir/url is exactly for this
+-    # version or the mapping will care for accessing this version.
+-}
+--- python-xstatic-angular-lrdragndrop-1.0.2.1.orig/xstatic/pkg/angular_irdragndrop/data/irdragndrop.js	2015-03-23 15:53:16.211692149 +0100
++++ /dev/null	2015-03-23 13:39:05.341324299 +0100
+@@ -1,184 +0,0 @@
+-(function (ng) {
+-    'use strict';
+-
+-    function isJqueryEventDataTransfer(){
+-        return window.jQuery && (-1 == window.jQuery.event.props.indexOf('dataTransfer'));
+-    }
+-
+-    if (isJqueryEventDataTransfer()) {
+-        window.jQuery.event.props.push('dataTransfer');
+-    }
+-
+-    var module = ng.module('lrDragNDrop', []);
+-
+-    module.service('lrDragStore', ['$document', function (document) {
+-
+-        var store = {};
+-
+-        this.hold = function hold(key, item, collectionFrom, safe) {
+-            store[key] = {
+-                item: item,
+-                collection: collectionFrom,
+-                safe: safe === true
+-            }
+-        };
+-
+-        this.get = function (namespace) {
+-            var
+-                modelItem = store[namespace], itemIndex;
+-
+-            if (modelItem) {
+-                itemIndex = modelItem.collection.indexOf(modelItem.item);
+-                return modelItem.safe === true ? modelItem.item : modelItem.collection.splice(itemIndex, 1)[0];
+-            } else {
+-                return null;
+-            }
+-        };
+-
+-        this.clean = function clean() {
+-            store = {};
+-        };
+-
+-        this.isHolding = function (namespace) {
+-            return store[namespace] !== undefined;
+-        };
+-
+-        document.bind('dragend', this.clean);
+-    }]);
+-
+-    module.service('lrDragHelper', function () {
+-        var th = this;
+-
+-        th.parseRepeater = function(scope, attr) {
+-            var
+-                repeatExpression = attr.ngRepeat,
+-                match;
+-
+-            if (!repeatExpression) {
+-                throw Error('this directive must be used with ngRepeat directive');
+-            }
+-            match = repeatExpression.match(/^(.*\sin).(\S*)/);
+-            if (!match) {
+-                throw Error("Expected ngRepeat in form of '_item_ in _collection_' but got '" +
+-                    repeatExpression + "'.");
+-            }
+-
+-            return scope.$eval(match[2]);
+-        };
+-
+-        th.lrDragSrcDirective = function(store, safe) {
+-            return function compileFunc(el, iattr) {
+-                iattr.$set('draggable', true);
+-                return function linkFunc(scope, element, attr) {
+-                    var
+-                        collection,
+-                        key = (safe === true ? attr.lrDragSrcSafe : attr.lrDragSrc ) || 'temp';
+-
+-                    if(attr.lrDragData) {
+-                        scope.$watch(attr.lrDragData, function (newValue) {
+-                            collection = newValue;
+-                        });
+-                    } else {
+-                        collection = th.parseRepeater(scope, attr);
+-                    }
+-
+-                    element.bind('dragstart', function (evt) {
+-                        store.hold(key, collection[scope.$index], collection, safe);
+-                        if(angular.isDefined(evt.dataTransfer)) {
+-                            evt.dataTransfer.setData('text/html', null); //FF/jQuery fix
+-                        }
+-                    });
+-                }
+-            }
+-        }
+-    });
+-
+-    module.directive('lrDragSrc', ['lrDragStore', 'lrDragHelper', function (store, dragHelper) {
+-        return{
+-            compile: dragHelper.lrDragSrcDirective(store)
+-        };
+-    }]);
+-
+-    module.directive('lrDragSrcSafe', ['lrDragStore', 'lrDragHelper', function (store, dragHelper) {
+-        return{
+-            compile: dragHelper.lrDragSrcDirective(store, true)
+-        };
+-    }]);
+-
+-    module.directive('lrDropTarget', ['lrDragStore', 'lrDragHelper', '$parse', function (store, dragHelper, $parse) {
+-        return {
+-            link: function (scope, element, attr) {
+-
+-                var
+-                    collection,
+-                    key = attr.lrDropTarget || 'temp',
+-                    classCache = null;
+-
+-                function isAfter(x, y) {
+-                    //check if below or over the diagonal of the box element
+-                    return (element[0].offsetHeight - x * element[0].offsetHeight / element[0].offsetWidth) < y;
+-                }
+-
+-                function resetStyle() {
+-                    if (classCache !== null) {
+-                        element.removeClass(classCache);
+-                        classCache = null;
+-                    }
+-                }
+-
+-                if(attr.lrDragData) {
+-                    scope.$watch(attr.lrDragData, function (newValue) {
+-                        collection = newValue;
+-                    });
+-                } else {
+-                    collection = dragHelper.parseRepeater(scope, attr);
+-                }
+-
+-                element.bind('drop', function (evt) {
+-                    var
+-                        collectionCopy = ng.copy(collection),
+-                        item = store.get(key),
+-                        dropIndex, i, l;
+-                    if (item !== null) {
+-                        dropIndex = scope.$index;
+-                        dropIndex = isAfter(evt.offsetX, evt.offsetY) ? dropIndex + 1 : dropIndex;
+-                        //srcCollection=targetCollection => we may need to apply a correction
+-                        if (collectionCopy.length > collection.length) {
+-                            for (i = 0, l = Math.min(dropIndex, collection.length - 1); i <= l; i++) {
+-                                if (!ng.equals(collectionCopy[i], collection[i])) {
+-                                    dropIndex = dropIndex - 1;
+-                                    break;
+-                                }
+-                            }
+-                        }
+-                        scope.$apply(function () {
+-                            collection.splice(dropIndex, 0, item);
+-                            var fn = $parse(attr.lrDropSuccess) || ng.noop;
+-                            fn(scope, {e: evt, item: item, collection: collection});
+-                        });
+-                        evt.preventDefault();
+-                        resetStyle();
+-                        store.clean();
+-                    }
+-                });
+-
+-                element.bind('dragleave', resetStyle);
+-
+-                element.bind('dragover', function (evt) {
+-                    var className;
+-                    if (store.isHolding(key)) {
+-                        className = isAfter(evt.offsetX, evt.offsetY) ? 'lr-drop-target-after' : 'lr-drop-target-before';
+-                        if (classCache !== className && classCache !== null) {
+-                            element.removeClass(classCache);
+-                        }
+-                        if (classCache !== className) {
+-                            element.addClass(className);
+-                        }
+-                        classCache = className;
+-                    }
+-                    evt.preventDefault();
+-                });
+-            }
+-        };
+-    }]);
+-})(angular);
+\ No newline at end of file
