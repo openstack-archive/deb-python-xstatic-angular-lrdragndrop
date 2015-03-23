@@ -4,11 +4,11 @@ Source: git://github.com/stackforge/xstatic-angular-irdragndrop.git
 
 Files: debian/*
 Copyright: (c) 2014, Thomas Goirand <zigo@debian.org>
-License: Apache-2
+License: Expat
 
 Files: *
-Copyright: (c) 2013, Thai Tran
-License: Apache-2
+Copyright: (c) 2013, Thai Tran <tqtran@us.ibm.com>
+License: Expat
 
 Files: xstatic/pkg/angular_irdragndrop/data/irdragndrop.js
 Copyright: (c) 2013-2014, Laurent Renard <aurent34azerty@gmail.com>
