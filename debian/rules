@@ -32,7 +32,7 @@ override_dh_auto_clean:
 	echo "Doing nothing"
 
 override_dh_clean:
-	#dh_clean -O--buildsystem=python_distutils
+	dh_clean -O--buildsystem=python_distutils
 	rm -rf build
 
 
