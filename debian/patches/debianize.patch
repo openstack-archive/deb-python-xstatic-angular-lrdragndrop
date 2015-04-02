@@ -2,11 +2,11 @@ Description: Debianize
  Do not use embedded version, but the one of the libjs-lrdragndrop.
 Author: Thomas Goirand <zigo@debian.org>
 Forwarded: not-needed
-Last-Update: 2015-03-23
+Last-Update: 2015-04-03
 
 --- python-xstatic-angular-lrdragndrop-1.0.2.1.orig/xstatic/pkg/angular_lrdragndrop/__init__.py
 +++ python-xstatic-angular-lrdragndrop-1.0.2.1/xstatic/pkg/angular_lrdragndrop/__init__.py
-@@ -38,9 +38,9 @@ HOMEPAGE = 'https://github.com/lorenzofo
+@@ -38,13 +38,13 @@ HOMEPAGE = 'https://github.com/lorenzofo
  LICENSE = '(same as %s)' % DISPLAY_NAME
  
  from os.path import join, dirname
@@ -18,3 +18,8 @@ Last-Update: 2015-03-23
  
  # location of the Javascript file that's the entry point for this package, if
  # one exists, relative to BASE_DIR
+-MAIN='lrdragndrop.js'
++MAIN='lrDragNDrop.js'
+ 
+ LOCATIONS = {
+     # CDN locations (if no public CDN exists, use an empty dict)
