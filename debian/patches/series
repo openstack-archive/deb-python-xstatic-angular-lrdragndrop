@@ -1,3 +1,2 @@
-#fixes-wrong-package-name.patch
-fix-wrong-setup.py.patch
+new_version.patch
 debianize.patch
