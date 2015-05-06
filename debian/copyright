@@ -10,7 +10,7 @@ Files: *
 Copyright: (c) 2013, Thai Tran <tqtran@us.ibm.com>
 License: Expat
 
-Files: xstatic/pkg/angular_irdragndrop/data/irdragndrop.js
+Files: xstatic/pkg/angular_lrdragndrop/data/lrdragndrop.js
 Copyright: (c) 2013-2014, Laurent Renard <aurent34azerty@gmail.com>
 License: Expat
 
