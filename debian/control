@@ -2,14 +2,15 @@ Source: python-xstatic-angular-lrdragndrop
 Section: python
 Priority: optional
 Maintainer: PKG OpenStack <openstack-devel@lists.alioth.debian.org>
-Uploaders: Thomas Goirand <zigo@debian.org>
+Uploaders: Thomas Goirand <zigo@debian.org>,
 Build-Depends: debhelper (>= 9),
                dh-python,
                python-all (>= 2.6.6-3~),
                python-setuptools,
                python3-all,
-               python3-setuptools
-Build-Conflicts: python-xstatic, python3-xstatic
+               python3-setuptools,
+Build-Conflicts: python-xstatic,
+                 python3-xstatic,
 Standards-Version: 3.9.6
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-xstatic-angular-lrdragndrop.git
 Vcs-Git: git://anonscm.debian.org/openstack/python-xstatic-angular-lrdragndrop.git
@@ -17,8 +18,11 @@ Homepage: https://github.com/stackforge/XStatic-Angular-lrdragndrop
 
 Package: python-xstatic-angular-lrdragndrop
 Architecture: all
-Pre-Depends: dpkg (>= 1.15.6~)
-Depends: python-xstatic, libjs-lrdragndrop, ${misc:Depends}, ${python:Depends}
+Pre-Depends: dpkg (>= 1.15.6~),
+Depends: libjs-lrdragndrop,
+         python-xstatic,
+         ${misc:Depends},
+         ${python:Depends},
 Description: Angular-Lrdragndrop 1.0.2 (XStatic packaging standard) - Python 2.x
  XStatic is a Python web development tool for handling required static data
  files from external projects, such as CSS, images, and JavaScript. It provides
@@ -30,8 +34,11 @@ Description: Angular-Lrdragndrop 1.0.2 (XStatic packaging standard) - Python 2.x
 
 Package: python3-xstatic-angular-lrdragndrop
 Architecture: all
-Pre-Depends: dpkg (>= 1.15.6~)
-Depends: python3-xstatic, libjs-lrdragndrop, ${misc:Depends}, ${python3:Depends}
+Pre-Depends: dpkg (>= 1.15.6~),
+Depends: libjs-lrdragndrop,
+         python3-xstatic,
+         ${misc:Depends},
+         ${python3:Depends},
 Description: Angular-Lrdragndrop 1.0.2 (XStatic packaging standard) - Python 3.x
  XStatic is a Python web development tool for handling required static data
  files from external projects, such as CSS, images, and JavaScript. It provides

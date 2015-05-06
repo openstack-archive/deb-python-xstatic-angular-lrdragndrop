@@ -4,10 +4,12 @@ Author: Thomas Goirand <zigo@debian.org>
 Forwarded: not-needed
 Last-Update: 2015-04-03
 
---- python-xstatic-angular-lrdragndrop-1.0.2.1.orig/xstatic/pkg/angular_lrdragndrop/__init__.py
-+++ python-xstatic-angular-lrdragndrop-1.0.2.1/xstatic/pkg/angular_lrdragndrop/__init__.py
+Index: python-xstatic-angular-lrdragndrop/xstatic/pkg/angular_lrdragndrop/__init__.py
+===================================================================
+--- python-xstatic-angular-lrdragndrop.orig/xstatic/pkg/angular_lrdragndrop/__init__.py
++++ python-xstatic-angular-lrdragndrop/xstatic/pkg/angular_lrdragndrop/__init__.py
 @@ -38,13 +38,13 @@ HOMEPAGE = 'https://github.com/lorenzofo
- LICENSE = '(same as %s)' % DISPLAY_NAME
+ LICENSE = 'MIT'
  
  from os.path import join, dirname
 -BASE_DIR = join(dirname(__file__), 'data')
