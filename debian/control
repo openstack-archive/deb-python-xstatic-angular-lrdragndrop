@@ -13,7 +13,7 @@ Build-Conflicts: python-xstatic, python3-xstatic
 Standards-Version: 3.9.6
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-xstatic-angular-lrdragndrop.git
 Vcs-Git: git://anonscm.debian.org/openstack/python-xstatic-angular-lrdragndrop.git
-Homepage: https://github.com/lorenzofox3/lrDragNDrop
+Homepage: https://github.com/stackforge/XStatic-Angular-lrdragndrop
 
 Package: python-xstatic-angular-lrdragndrop
 Architecture: all
