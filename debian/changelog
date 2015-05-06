@@ -1,5 +1,5 @@
 python-xstatic-angular-lrdragndrop (1.0.2.2-1) unstable; urgency=medium
 
-  * Initial release. (Closes: #XXXXXX)
+  * Initial release. (Closes: #784429)
 
  -- Thomas Goirand <zigo@debian.org>  Mon, 23 Mar 2015 15:20:41 +0100
